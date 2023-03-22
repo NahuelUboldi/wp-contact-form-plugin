@@ -1,5 +1,8 @@
 
 <form id="enquiry_form">
+ <?php wp_nonce_field('wp_rest'); ?>
+
+
  <label>name</label><br>
  <input type="text" name="name"><br><br>
  
@@ -14,13 +17,22 @@
 
  <button type="submit">Submit form</button>
 </form>
-
-<script>
-  window.jQuery || document.write('<script src="http://mysite.com/jquery.min.js"><\/script>'))
+<script >
   jQuery(document).ready(function($) {
-    $('#enquiry_form').submit(function(event) {
-      event.preventDefault();
-      alert('ok')
+
+    $("#enquiry_form").submit(function(e){
+      e.preventDefault();
+
+      var form = $(this);
+
+      $.ajax({
+        type:"POST",
+        url:"<?php echo get_rest_url( null, 'v1/contact-form/submit'); ?>",
+        data:form.serialize()
+      })
+
     })
+
   })
-</script>
+
+ </script>
